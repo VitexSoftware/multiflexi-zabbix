@@ -1,0 +1,5 @@
+multiflexi-zabbix (0.0.1) unstable; urgency=medium
+
+  * Initial standalone release extracted from MultiFlexi and multiflexi-core.
+
+ -- vitex <info@vitexsoftware.cz>  Thu, 19 Mar 2026 21:15:00 +0100

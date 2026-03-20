@@ -1,0 +1,32 @@
+{
+    "name": "vitexsoftware/multiflexi-zabbix",
+    "description": "Zabbix integration for MultiFlexi",
+    "type": "library",
+    "require": {
+        "vitexsoftware/multiflexi-core": "dev-main",
+        "confirm-it-solutions/php-zabbix-api": "^3.0"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Vítězslav Dvořák",
+            "email": "info@vitexsoftware.cz"
+        }
+    ],
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "MultiFlexi\\": "src/MultiFlexi/",
+            "MultiFlexi\\Zabbix\\": "src/MultiFlexi/Zabbix/",
+            "MultiFlexi\\Action\\": "src/MultiFlexi/Action/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Test\\MultiFlexi\\": "tests/MultiFlexi/"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "*"
+    }
+}

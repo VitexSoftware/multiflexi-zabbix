@@ -1,0 +1,7 @@
+#!/bin/sh
+# prerm script for multiflexi-zabbix
+set -e
+
+#DEBHELPER#
+
+exit 0
