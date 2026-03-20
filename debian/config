@@ -1,0 +1,8 @@
+#!/bin/sh
+set -e
+. /usr/share/debconf/confmodule
+
+db_input high multiflexi-zabbix/zabbix_server || true
+db_input high multiflexi-zabbix/zabbix_host || true
+db_input high multiflexi-zabbix/use_zabbix_sender || true
+db_go || true

@@ -8,7 +8,7 @@ Homepage: https://github.com/VitexSoftware/multiflexi-zabbix
 
 Package: multiflexi-zabbix
 Architecture: all
-Depends: ${misc:Depends}, ${phpcomposer:Depends}, php-vitexsoftware-multiflexi-core, confirm-it-solutions-php-zabbix-api
+Depends: ${misc:Depends}, ${phpcomposer:Depends}, php-vitexsoftware-multiflexi-core, confirm-it-solutions-php-zabbix-api, debconf (>= 0.5), php-dragonmantank-cron-expression
 Recommends: zabbix-agent2
 Description: Zabbix support for MultiFlexi
  LLD for configured content

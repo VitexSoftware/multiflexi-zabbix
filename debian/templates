@@ -1,0 +1,18 @@
+Template: multiflexi-zabbix/zabbix_server
+Type: string
+Default: localhost
+Description: Zabbix server address:
+ Please enter the address (hostname or IP) of your Zabbix server.
+
+Template: multiflexi-zabbix/zabbix_host
+Type: string
+Default: localhost
+Description: Zabbix host name:
+ Please enter the name of this host as it is registered in Zabbix.
+
+Template: multiflexi-zabbix/use_zabbix_sender
+Type: boolean
+Default: false
+Description: Use zabbix_sender binary?
+ If set to true, the package will use the external zabbix_sender command
+ instead of the internal PHP implementation.

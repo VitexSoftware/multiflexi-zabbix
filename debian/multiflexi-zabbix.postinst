@@ -1,12 +1,43 @@
 #!/bin/sh
-# postinst script for multiflexi-zabbix
 set -e
-
 . /usr/share/debconf/confmodule
 
-if [ "$1" = "configure" ] || [ "$1" = "abort-upgrade" ] || [ "$1" = "abort-deconfigure" ] || [ "$1" = "abort-remove" ] ; then
+if [ "$1" = "configure" ]; then
+    db_get multiflexi-zabbix/zabbix_server || true
+    ZABBIX_SERVER="$RET"
+    db_get multiflexi-zabbix/zabbix_host || true
+    ZABBIX_HOST="$RET"
+    db_get multiflexi-zabbix/use_zabbix_sender || true
+    USE_ZABBIX_SENDER="$RET"
 
-        if deb-systemd-helper --quiet was-enabled 'zabbix-agent2.service'; then
-            deb-systemd-helper reload 'zabbix-agent2.service' >/dev/null || true
+    CONFIG_DIR="/etc/multiflexi"
+    CONFIG_FILE="$CONFIG_DIR/multiflexi.env"
+
+    if [ ! -d "$CONFIG_DIR" ]; then
+        mkdir -p "$CONFIG_DIR"
+    fi
+
+    touch "$CONFIG_FILE"
+
+    update_config() {
+        key=$1
+        value=$2
+        if grep -q "^$key=" "$CONFIG_FILE"; then
+            sed -i "s|^$key=.*|$key=$value|" "$CONFIG_FILE"
+        else
+            echo "$key=$value" >> "$CONFIG_FILE"
         fi
+    }
+
+    [ -n "$ZABBIX_SERVER" ] && update_config "ZABBIX_SERVER" "$ZABBIX_SERVER"
+    [ -n "$ZABBIX_HOST" ] && update_config "ZABBIX_HOST" "$ZABBIX_HOST"
+    [ -n "$USE_ZABBIX_SENDER" ] && update_config "USE_ZABBIX_SENDER" "$USE_ZABBIX_SENDER"
 fi
+
+if [ "$1" = "configure" ] || [ "$1" = "abort-upgrade" ] || [ "$1" = "abort-deconfigure" ] || [ "$1" = "abort-remove" ] ; then
+    if deb-systemd-helper --quiet was-enabled 'zabbix-agent2.service' >/dev/null 2>&1; then
+        deb-systemd-helper reload 'zabbix-agent2.service' >/dev/null 2>&1 || true
+    fi
+fi
+
+#DEBHELPER#

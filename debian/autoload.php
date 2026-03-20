@@ -10,6 +10,7 @@
 
 // Load the core library autoloader (brings in MultiFlexi core + all its deps)
 require_once '/usr/share/php/MultiFlexi/autoload.php';
+require_once '/usr/share/php/Cron/autoload.php';
 
 // Load additional dependency autoloaders needed by the web app
 //require_once '/usr/share/php/EaseHtml/autoload.php';

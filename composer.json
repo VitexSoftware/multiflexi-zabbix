@@ -4,6 +4,7 @@
     "type": "library",
     "require": {
         "vitexsoftware/multiflexi-core": "dev-main",
+        "dragonmantank/cron-expression": "^3.0@dev",
         "confirm-it-solutions/php-zabbix-api": "^3.0"
     },
     "license": "MIT",
@@ -27,6 +28,16 @@
         }
     },
     "require-dev": {
-        "phpunit/phpunit": "*"
+        "phpunit/phpunit": "*",
+        "phpstan/phpstan": "*",
+        "friendsofphp/php-cs-fixer": "^3.92",
+        "ergebnis/composer-normalize": "^2.48",
+        "ergebnis/php-cs-fixer-config": "^6.58",
+        "phpstan/phpstan-phpunit": "2.0.x-dev"
+    },
+    "config": {
+        "allow-plugins": {
+            "ergebnis/composer-normalize": true
+        }
     }
 }

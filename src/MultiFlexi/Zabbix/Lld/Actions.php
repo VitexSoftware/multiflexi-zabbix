@@ -21,7 +21,7 @@ use MultiFlexi\ActionConfig;
 
 \define('APP_NAME', 'MultiFlexi LLD Actions');
 
-require_once __DIR__ . '/../../../../vendor/autoload.php';
+require_once __DIR__.'/../../../../vendor/autoload.php';
 Shared::init(['DB_CONNECTION', 'DB_HOST', 'DB_PORT', 'DB_DATABASE', 'DB_USERNAME', 'DB_PASSWORD'], '../.env');
 $loggers = ['syslog', '\MultiFlexi\LogToSQL'];
 

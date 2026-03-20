@@ -11,3 +11,6 @@ debian/debhelper-build-stamp
 debian/files
 debian/multiflexi-zabbix.debhelper.log
 debian/multiflexi-zabbix.substvars
+/nbproject/private/
+.build/php-cs-fixer/
+
