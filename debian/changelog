@@ -1,5 +1,11 @@
+multiflexi-zabbix (2.4.0) UNRELEASED; urgency=medium
+
+  * debian native autoloader used
+
+ -- vitex <info@vitexsoftware.cz>  Mon, 23 Mar 2026 05:26:56 +0100
+
 multiflexi-zabbix (0.0.1) unstable; urgency=medium
 
   * Initial standalone release extracted from MultiFlexi and multiflexi-core.
 
- -- vitex <info@vitexsoftware.cz>  Thu, 19 Mar 2026 21:15:00 +0100
+ -- vitex <info@vitexsoftware.cz>  Mon, 23 Mar 2026 05:26:36 +0100
