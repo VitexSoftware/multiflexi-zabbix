@@ -24,7 +24,7 @@ require_once '../vendor/autoload.php';
 Shared::init(['DB_CONNECTION', 'DB_HOST', 'DB_PORT', 'DB_DATABASE', 'DB_USERNAME', 'DB_PASSWORD'], '../.env');
 $loggers = ['syslog', '\MultiFlexi\LogToSQL'];
 
-if (\Ease\Shared::cfg('ZABBIX_SERVER') && \Ease\Shared::cfg('ZABBIX_HOST') && class_exists('\MultiFlexi\LogToZabbix')) {
+if (Shared::cfg('ZABBIX_SERVER') && Shared::cfg('ZABBIX_HOST') && class_exists('\MultiFlexi\LogToZabbix')) {
     $loggers[] = '\MultiFlexi\LogToZabbix';
 }
 
