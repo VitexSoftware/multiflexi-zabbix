@@ -5,4 +5,4 @@
 
 override_dh_install:
 	dh_install
-	sed -i -e 's/..\/vendor\/autoload.php/\/usr\/share\/php\/MultiFlexi\/autoload.php/g' debian/multiflexi-zabbix/usr/share/multiflexi-zabbix/*.php
+	sed -i -e 's/..\/vendor\//\/usr\/lib\/php\/multiflexi-zabbix\//g' debian/multiflexi-zabbix/usr/share/multiflexi-zabbix/*.php
