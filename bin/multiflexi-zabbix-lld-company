@@ -1,2 +1,2 @@
 #!/bin/sh
-php -q -f /usr/lib/multiflexi/MultiFlexi/Zabbix/Lld/Company.php -- $@
+php -q -f /usr/lib/multiflexi-zabbix/MultiFlexi/Zabbix/Lld/Company.php -- $@
