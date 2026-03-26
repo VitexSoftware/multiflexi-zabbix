@@ -13,14 +13,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace MultiFlexi;
+namespace MultiFlexi\Zabbix\Lld;
 
 use Ease\Anonym;
 use Ease\Shared;
+use MultiFlexi\Application;
+use MultiFlexi\Company;
+use MultiFlexi\Scheduler;
 
 \define('APP_NAME', 'MultiFlexi LLD');
 
-require_once '../vendor/autoload.php';
+require_once __DIR__.'/../../../../vendor/autoload.php';
 Shared::init(['DB_CONNECTION', 'DB_HOST', 'DB_PORT', 'DB_DATABASE', 'DB_USERNAME', 'DB_PASSWORD'], '../.env');
 $loggers = ['syslog', '\MultiFlexi\LogToSQL'];
 

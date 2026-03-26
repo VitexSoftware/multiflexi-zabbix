@@ -23,7 +23,7 @@ require_once '../vendor/autoload.php';
 Shared::init(['DB_CONNECTION', 'DB_HOST', 'DB_PORT', 'DB_DATABASE', 'DB_USERNAME', 'DB_PASSWORD'], '../.env');
 $loggers = ['syslog', '\MultiFlexi\LogToSQL'];
 
-if (\Ease\Shared::cfg('ZABBIX_SERVER') && \Ease\Shared::cfg('ZABBIX_HOST') && class_exists('\MultiFlexi\LogToZabbix')) {
+if (Shared::cfg('ZABBIX_SERVER') && Shared::cfg('ZABBIX_HOST') && class_exists('\MultiFlexi\LogToZabbix')) {
     $loggers[] = '\MultiFlexi\LogToZabbix';
 }
 
@@ -71,28 +71,36 @@ foreach ($actions->listingQuery()->fetchAll() as $runtemplateActions) {
 }
 
 foreach ($runtemplates as $rtid => $runtemplateData) {
-    if (\strlen($companyCode) && $companyCode !== $runtemplateData['company_code']) {
+    if (\strlen($companyCode) && \array_key_exists('company_code', $runtemplateData) && ($companyCode !== $runtemplateData['company_code'])) {
         continue;
     }
 
-    if (\array_key_exists($runtemplateData['app_id'], $appsAssigned)) {
+    if (!\array_key_exists('id', $runtemplateData)) {
+        continue;
+    }
+
+    if (\array_key_exists('app_id', $runtemplateData) && \array_key_exists($runtemplateData['app_id'], $appsAssigned)) {
         $lldData[] = [
             '{#APP_NAME}' => $appsAssigned[$runtemplateData['app_id']]['name'],
             '{#APP_CODE}' => $appsAssigned[$runtemplateData['app_id']]['code'],
             '{#APP_UUID}' => $appsAssigned[$runtemplateData['app_id']]['uuid'],
             '{#INTERVAL}' => Scheduler::codeToInterval($runtemplateData['interv']),
             '{#INTERVAL_SECONDS}' => Scheduler::codeToSeconds($runtemplateData['interv']),
-            '{#NEXT_SCHEDULE_UNIXTIME}' =>  $runtemplateData['interv'] == 'n' ? null : cronSeconds($runtemplateData['interv'] === 'c' ? $runtemplateData['cron'] : Scheduler::$intervCron[$runtemplateData['interv']])->getTimestamp(),
+            '{#NEXT_SCHEDULE_UNIXTIME}' => $runtemplateData['interv'] === 'n' ? null : cronSeconds($runtemplateData['interv'] === 'c' ? $runtemplateData['cron'] : Scheduler::$intervCron[$runtemplateData['interv']])->getTimestamp(),
             '{#RUNTEMPLATE}' => $runtemplateData['id'],
             '{#RUNTEMPLATE_NAME}' => $runtemplateData['name'],
             '{#ACTIONS}' => \array_key_exists('action', $runtemplateData) ? $runtemplateData['action'] : [],
             '{#COMPANY_NAME}' => $runtemplateData['company_name'],
             '{#COMPANY_CODE}' => $runtemplateData['company_code'],
-            '{#COMPANY_SERVER}' => \Ease\Shared::cfg('ZABBIX_HOST'), //TODO:
+            '{#COMPANY_SERVER}' => Shared::cfg('ZABBIX_HOST'), // TODO:
             '{#DATA_ITEM}' => false, // TODO
         ];
     } else {
-        $rumtemplate->addStatusMessage('Application '.$runtemplateData['app_id'].' is not assigned with company ?');
+        if (\array_key_exists('app_id', $runtemplateData)) {
+            $rumtemplate->addStatusMessage('Application '.$runtemplateData['app_id'].' is not assigned with company ?');
+        } else {
+            $rumtemplate->addStatusMessage('Runtemplate '.$runtemplateData['id'].' without application assigned ?');
+        }
     }
 }
 
