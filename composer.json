@@ -3,8 +3,7 @@
     "description": "Zabbix integration for MultiFlexi",
     "type": "library",
     "require": {
-        "vitexsoftware/multiflexi-core": "dev-main",
-        "dragonmantank/cron-expression": "^3.0@dev"
+        "vitexsoftware/multiflexi-core": "dev-main"
     },
     "license": "MIT",
     "authors": [
