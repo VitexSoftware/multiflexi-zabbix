@@ -1,6 +1,7 @@
 multiflexi-zabbix (2.4.1) UNRELEASED; urgency=medium
 
   * queue ldd added
+  * ask for ZABBIX_URL (web frontend) during installation for the Integrations menu link
 
  -- vitex <info@vitexsoftware.cz>  Thu, 26 Mar 2026 18:41:06 +0100
 

@@ -10,6 +10,17 @@ Default: localhost
 Description: Zabbix host name:
  Please enter the name of this host as it is registered in Zabbix.
 
+Template: multiflexi-zabbix/zabbix_url
+Type: string
+Description: Zabbix web frontend URL:
+ Please enter the base URL of the Zabbix web frontend
+ (for example https://zabbix.example.com/zabbix).
+ .
+ When set, a Zabbix link is shown in the MultiFlexi Integrations menu.
+ This is separate from the Zabbix server address above, which is the
+ trapper/proxy host used for sending metrics and may not be reachable
+ as a web frontend. Leave empty to disable the link.
+
 Template: multiflexi-zabbix/use_zabbix_sender
 Type: boolean
 Default: false
