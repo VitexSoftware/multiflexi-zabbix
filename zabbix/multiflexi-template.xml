@@ -207,6 +207,50 @@ License: MIT</description>
                         </application>
                     </applications>
                 </item>
+                <!-- Stale Schedule Items -->
+                <item>
+                    <uuid>88888888999900001111222233334444</uuid>
+                    <name>MultiFlexi: Stale RunTemplate Schedules</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>multiflexi.schedule.stale</key>
+                    <delay>15m</delay>
+                    <history>7d</history>
+                    <trends>0</trends>
+                    <value_type>TEXT</value_type>
+                    <description>Active run-templates whose next_schedule is stuck more than the tolerance window in the past (in JSON format). A non-empty list means the runtemplate has silently dropped out of CronScheduler's daily rotation - see MultiFlexi\Scheduler::initializeScheduling().</description>
+                    <applications>
+                        <application>
+                            <name>MultiFlexi Statistics</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <uuid>99999999000011112222333344445555</uuid>
+                    <name>MultiFlexi: Stale RunTemplate Count</name>
+                    <type>DEPENDENT</type>
+                    <key>multiflexi.schedule.stale.count</key>
+                    <delay>0</delay>
+                    <history>7d</history>
+                    <trends>30d</trends>
+                    <value_type>UNSIGNED</value_type>
+                    <description>Number of active run-templates whose next_schedule is stuck in the past</description>
+                    <applications>
+                        <application>
+                            <name>MultiFlexi Statistics</name>
+                        </application>
+                    </applications>
+                    <preprocessing>
+                        <step>
+                            <type>JSONPATH</type>
+                            <parameters>
+                                <parameter>$.count</parameter>
+                            </parameters>
+                        </step>
+                    </preprocessing>
+                    <master_item>
+                        <key>multiflexi.schedule.stale</key>
+                    </master_item>
+                </item>
             </items>
             <discovery_rules>
                 <!-- Company Discovery -->
@@ -450,6 +494,15 @@ Check:
 - Zabbix agent is running
 - multiflexi-cli is accessible
 - Database connectivity</description>
+                </trigger>
+                <trigger>
+                    <uuid>f5603e4c88c34d6fa4703d3a60202472</uuid>
+                    <expression>{MultiFlexi by Zabbix agent:multiflexi.schedule.stale.count.last()}&gt;0</expression>
+                    <name>MultiFlexi: {ITEM.VALUE} RunTemplate(s) have a stale schedule</name>
+                    <priority>HIGH</priority>
+                    <description>One or more active RunTemplates have a next_schedule stuck in the past and have silently dropped out of the daily cron rotation - their jobs will not run again on their own.
+
+This typically happens when a job never reaches normal completion (crash, OOM-kill, executor failure outside the standard fail path), leaving next_schedule set. Run `multiflexi-cli run-template:stale --format=json` for details, and `multiflexi-cli queue:fix` to reset the affected RunTemplates back into the schedule.</description>
                 </trigger>
             </triggers>
             <macros>
