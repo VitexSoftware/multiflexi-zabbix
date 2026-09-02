@@ -452,6 +452,152 @@ This may indicate recurring issues with the application or its configuration.</d
                         </item_prototype>
                     </item_prototypes>
                 </discovery_rule>
+                <!-- Credential Availability Discovery -->
+                <discovery_rule>
+                    <uuid>493ac57965b830bfe0d1c4c7a0175423</uuid>
+                    <name>MultiFlexi: Credential Availability Discovery</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>multiflexi.credential.lld</key>
+                    <delay>1h</delay>
+                    <lifetime>7d</lifetime>
+                    <description>Discovers MultiFlexi credentials and reports their availability state. Credentials whose type implements a live check (checkableCredentialInterface) report the real checkAvailability() result; credentials without one still get flagged Misconfigured when a required field is empty.</description>
+                    <filter>
+                        <conditions>
+                            <condition>
+                                <macro>{#CREDENTIAL_TYPE}</macro>
+                                <value>{$CRED.AVAILABILITY.EXCLUDE}</value>
+                                <operator>NOT_MATCHES_REGEX</operator>
+                                <formulaid>A</formulaid>
+                            </condition>
+                        </conditions>
+                        <evaltype>AND_OR</evaltype>
+                    </filter>
+                    <item_prototypes>
+                        <item_prototype>
+                            <uuid>3c8b2ac6ca7bbb16a2890668e0f7c94c</uuid>
+                            <name>Credential {#CREDENTIAL_NAME}: Availability check</name>
+                            <type>ZABBIX_ACTIVE</type>
+                            <key>multiflexi.credential.check[{#CREDENTIAL_ID}]</key>
+                            <delay>{$CRED.AVAILABILITY.INTERVAL:"{#CREDENTIAL_TYPE}"}</delay>
+                            <history>7d</history>
+                            <trends>0</trends>
+                            <value_type>TEXT</value_type>
+                            <description>Full checkAvailability() result for credential {#CREDENTIAL_NAME} ({#CREDENTIAL_TYPE}) as JSON: state, message, checked_at, ttl, details. Polled once per cycle; the State/Message/Details items below are derived from this via JSONPath preprocessing so the (possibly network-bound) check only runs once.</description>
+                            <applications>
+                                <application>
+                                    <name>MultiFlexi Credentials</name>
+                                </application>
+                            </applications>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>ea44057b1e2e6ba83dbc856ac0d64919</uuid>
+                            <name>Credential {#CREDENTIAL_NAME}: State</name>
+                            <type>DEPENDENT</type>
+                            <key>multiflexi.credential.state[{#CREDENTIAL_ID}]</key>
+                            <delay>0</delay>
+                            <history>7d</history>
+                            <trends>30d</trends>
+                            <value_type>UNSIGNED</value_type>
+                            <description>Availability state of credential {#CREDENTIAL_NAME} (0=Available, 1=Degraded, 2=Unavailable, 3=Misconfigured, 4=Unknown)</description>
+                            <applications>
+                                <application>
+                                    <name>MultiFlexi Credentials</name>
+                                </application>
+                            </applications>
+                            <valuemap>
+                                <name>MultiFlexi Credential State</name>
+                            </valuemap>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <parameters>
+                                        <parameter>$.state_code</parameter>
+                                    </parameters>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>multiflexi.credential.check[{#CREDENTIAL_ID}]</key>
+                            </master_item>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>3178b815bd12c849bd307c2c030ed3da</uuid>
+                            <name>Credential {#CREDENTIAL_NAME}: Message</name>
+                            <type>DEPENDENT</type>
+                            <key>multiflexi.credential.message[{#CREDENTIAL_ID}]</key>
+                            <delay>0</delay>
+                            <history>7d</history>
+                            <trends>0</trends>
+                            <value_type>TEXT</value_type>
+                            <description>Human-readable availability message for credential {#CREDENTIAL_NAME}</description>
+                            <applications>
+                                <application>
+                                    <name>MultiFlexi Credentials</name>
+                                </application>
+                            </applications>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <parameters>
+                                        <parameter>$.message</parameter>
+                                    </parameters>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>multiflexi.credential.check[{#CREDENTIAL_ID}]</key>
+                            </master_item>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>babb25ac4af467682098882e59285e1f</uuid>
+                            <name>Credential {#CREDENTIAL_NAME}: Details</name>
+                            <type>DEPENDENT</type>
+                            <key>multiflexi.credential.details[{#CREDENTIAL_ID}]</key>
+                            <delay>0</delay>
+                            <history>7d</history>
+                            <trends>0</trends>
+                            <value_type>TEXT</value_type>
+                            <description>Opaque JSON passthrough of the checkAvailability() details array for credential {#CREDENTIAL_NAME}. Field names are prototype-specific and not standardized across credential types - for troubleshooting, not alerting.</description>
+                            <applications>
+                                <application>
+                                    <name>MultiFlexi Credentials</name>
+                                </application>
+                            </applications>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <parameters>
+                                        <parameter>$.details</parameter>
+                                    </parameters>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>multiflexi.credential.check[{#CREDENTIAL_ID}]</key>
+                            </master_item>
+                        </item_prototype>
+                    </item_prototypes>
+                    <trigger_prototypes>
+                        <trigger_prototype>
+                            <uuid>2d95266d27839711c9afcfa488f51f87</uuid>
+                            <expression>{MultiFlexi by Zabbix agent:multiflexi.credential.state[{#CREDENTIAL_ID}].last()}=3</expression>
+                            <name>Credential {#CREDENTIAL_NAME} is misconfigured</name>
+                            <priority>WARNING</priority>
+                            <description>Credential {#CREDENTIAL_NAME} ({#CREDENTIAL_TYPE}) in {#COMPANY_NAME} is missing required configuration and cannot be used. See the credential's Message/Details items or the MultiFlexi credential UI for which fields are missing.</description>
+                        </trigger_prototype>
+                        <trigger_prototype>
+                            <uuid>081e70e1e1aa6c97d8e2614b84d91c43</uuid>
+                            <expression>{MultiFlexi by Zabbix agent:multiflexi.credential.state[{#CREDENTIAL_ID}].last()}=2</expression>
+                            <name>Credential {#CREDENTIAL_NAME} API is unreachable</name>
+                            <priority>HIGH</priority>
+                            <description>Credential {#CREDENTIAL_NAME} ({#CREDENTIAL_TYPE}) in {#COMPANY_NAME} is fully configured but its endpoint could not be reached. Jobs depending on this credential will fail.</description>
+                        </trigger_prototype>
+                        <trigger_prototype>
+                            <uuid>c644813838487dd0cf675e28769fee61</uuid>
+                            <expression>{MultiFlexi by Zabbix agent:multiflexi.credential.state[{#CREDENTIAL_ID}].last()}=1</expression>
+                            <name>Credential {#CREDENTIAL_NAME} is degraded</name>
+                            <priority>AVERAGE</priority>
+                            <description>Credential {#CREDENTIAL_NAME} ({#CREDENTIAL_TYPE}) in {#COMPANY_NAME} is reachable but impaired (e.g. remote service busy or rate-limited).</description>
+                        </trigger_prototype>
+                    </trigger_prototypes>
+                </discovery_rule>
             </discovery_rules>
             <httptests>
                 <httptest>
@@ -516,6 +662,16 @@ This typically happens when a job never reaches normal completion (crash, OOM-ki
                     <value>http://localhost/multiflexi</value>
                     <description>MultiFlexi web interface URL</description>
                 </macro>
+                <macro>
+                    <macro>{$CRED.AVAILABILITY.INTERVAL}</macro>
+                    <value>5m</value>
+                    <description>Default polling interval for credential availability checks (multiflexi.credential.check[*]). Override per credential type with a macro context, e.g. {$CRED.AVAILABILITY.INTERVAL:"RaiffeisenBank"} = 30m, for services with tight API rate limits - no template/code change needed.</description>
+                </macro>
+                <macro>
+                    <macro>{$CRED.AVAILABILITY.EXCLUDE}</macro>
+                    <value></value>
+                    <description>Regex matched against {#CREDENTIAL_TYPE}; any matching credential type is excluded from Credential Availability Discovery entirely. Empty (default) excludes nothing. E.g. set to "^(RaiffeisenBank)$" to stop discovering/checking that type without touching the template.</description>
+                </macro>
             </macros>
             <valuemaps>
                 <valuemap>
@@ -547,6 +703,32 @@ This typically happens when a job never reaches normal completion (crash, OOM-ki
                         <mapping>
                             <value>1</value>
                             <newvalue>Up</newvalue>
+                        </mapping>
+                    </mappings>
+                </valuemap>
+                <valuemap>
+                    <uuid>591a5c8e18111bd4a1efa81ae7f4bab6</uuid>
+                    <name>MultiFlexi Credential State</name>
+                    <mappings>
+                        <mapping>
+                            <value>0</value>
+                            <newvalue>Available</newvalue>
+                        </mapping>
+                        <mapping>
+                            <value>1</value>
+                            <newvalue>Degraded</newvalue>
+                        </mapping>
+                        <mapping>
+                            <value>2</value>
+                            <newvalue>Unavailable</newvalue>
+                        </mapping>
+                        <mapping>
+                            <value>3</value>
+                            <newvalue>Misconfigured</newvalue>
+                        </mapping>
+                        <mapping>
+                            <value>4</value>
+                            <newvalue>Unknown</newvalue>
                         </mapping>
                     </mappings>
                 </valuemap>
