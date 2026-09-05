@@ -1,10 +1,20 @@
 multiflexi-zabbix (2.4.2) UNRELEASED; urgency=medium
 
+  [ Vítězslav Dvořák ]
   * Add watchdog item/trigger for RunTemplates whose next_schedule is
     stuck in the past (multiflexi.schedule.stale, backed by
     multiflexi-cli run-template:stale).
 
- -- Vítězslav Dvořák <info@vitexsoftware.cz>  Mon, 20 Jul 2026 15:45:00 +0200
+  [ CyberVitexus ]
+  * Add Zabbix LLD for per-credential endpoint availability monitoring
+    (states Available/Degraded/Unavailable/Misconfigured/Unknown; High-
+    severity trigger on Unavailable).
+  * Fix fatal error in credential availability check: initialize
+    MultiFlexi\Defaults before invoking checkAvailability()
+    (RaiffeisenBank and others read Defaults::$MULTIFLEXI_TMP during
+    construction).
+
+ -- CyberVitexus <cybervitexus@gmail.com>  Sat, 05 Sep 2026 22:25:00 +0200
 
 multiflexi-zabbix (2.4.1) UNRELEASED; urgency=medium
 
