@@ -501,8 +501,8 @@ RunTemplate ID: {#RUNTEMPLATE}</description>
                 </macro>
                 <macro>
                     <macro>{$CRED.AVAILABILITY.EXCLUDE}</macro>
-                    <value></value>
-                    <description>Regex matched against {#CREDENTIAL_TYPE}; any matching credential type is excluded from Credential Availability Discovery entirely. Empty (default) excludes nothing. E.g. set to "^(RaiffeisenBank)$" to stop discovering/checking that type without touching the template.</description>
+                    <value>^$</value>
+                    <description>Regex matched against {#CREDENTIAL_TYPE}; any matching credential type is excluded from Credential Availability Discovery entirely. Default "^$" only matches an empty string, which no real credential type name ever is, so nothing is excluded. E.g. set to "^(RaiffeisenBank)$" to stop discovering/checking that type without touching the template. Do not set this to an empty string - an empty regex matches everything, which would silently exclude every credential from discovery.</description>
                 </macro>
             </macros>
             <valuemaps>
