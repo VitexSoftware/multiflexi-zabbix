@@ -4,13 +4,13 @@
     <date>2025-01-30T12:00:00Z</date>
     <groups>
         <group>
-            <uuid>7df96b18f230490a9a0a9e2307226338</uuid>
+            <uuid>eee353dc4830460297e386fdb3df8500</uuid>
             <name>Templates/Applications</name>
         </group>
     </groups>
     <templates>
         <template>
-            <uuid>a1b2c3d4e5f6789012345678901234ab</uuid>
+            <uuid>bd4f272898794e47b0adb0444b946708</uuid>
             <template>MultiFlexi by Zabbix agent</template>
             <name>MultiFlexi by Zabbix agent</name>
             <description>Template for monitoring MultiFlexi job scheduler and automation framework.
@@ -40,7 +40,7 @@ License: MIT</description>
             <items>
                 <!-- System Status Items -->
                 <item>
-                    <uuid>11111111222233334444555566667777</uuid>
+                    <uuid>67c47e8027ac4b67a299b5fc2e48ae3e</uuid>
                     <name>MultiFlexi: System Status</name>
                     <type>ZABBIX_ACTIVE</type>
                     <key>multiflexi.appstatus</key>
@@ -49,27 +49,16 @@ License: MIT</description>
                     <trends>30d</trends>
                     <value_type>TEXT</value_type>
                     <description>MultiFlexi system status in JSON format including database, services, and entity counts.</description>
-                    <applications>
-                        <application>
-                            <name>MultiFlexi System</name>
-                        </application>
-                    </applications>
                 </item>
                 <item>
-                    <uuid>22222222333344445555666677778888</uuid>
+                    <uuid>48fd9c78482a4a2da17a777fc6c21ffa</uuid>
                     <name>MultiFlexi: Database Host</name>
                     <type>DEPENDENT</type>
                     <key>multiflexi.db.host</key>
-                    <delay>0</delay>
                     <history>7d</history>
                     <trends>0</trends>
                     <value_type>CHAR</value_type>
                     <description>Database hostname from system status</description>
-                    <applications>
-                        <application>
-                            <name>MultiFlexi System</name>
-                        </application>
-                    </applications>
                     <preprocessing>
                         <step>
                             <type>JSONPATH</type>
@@ -83,20 +72,14 @@ License: MIT</description>
                     </master_item>
                 </item>
                 <item>
-                    <uuid>33333333444455556666777788889999</uuid>
+                    <uuid>c2f52b5255ed4eb3a8a6c58b64f4313d</uuid>
                     <name>MultiFlexi: Total Applications</name>
                     <type>DEPENDENT</type>
                     <key>multiflexi.applications.total</key>
-                    <delay>0</delay>
                     <history>7d</history>
                     <trends>30d</trends>
                     <value_type>UNSIGNED</value_type>
                     <description>Total number of applications registered in MultiFlexi</description>
-                    <applications>
-                        <application>
-                            <name>MultiFlexi Statistics</name>
-                        </application>
-                    </applications>
                     <preprocessing>
                         <step>
                             <type>JSONPATH</type>
@@ -110,20 +93,14 @@ License: MIT</description>
                     </master_item>
                 </item>
                 <item>
-                    <uuid>44444444555566667777888899990000</uuid>
+                    <uuid>55495f242add4680a04827ca08a898a0</uuid>
                     <name>MultiFlexi: Total Companies</name>
                     <type>DEPENDENT</type>
                     <key>multiflexi.companies.total</key>
-                    <delay>0</delay>
                     <history>7d</history>
                     <trends>30d</trends>
                     <value_type>UNSIGNED</value_type>
                     <description>Total number of companies/tenants in MultiFlexi</description>
-                    <applications>
-                        <application>
-                            <name>MultiFlexi Statistics</name>
-                        </application>
-                    </applications>
                     <preprocessing>
                         <step>
                             <type>JSONPATH</type>
@@ -137,20 +114,14 @@ License: MIT</description>
                     </master_item>
                 </item>
                 <item>
-                    <uuid>55555555666677778888999900001111</uuid>
+                    <uuid>2faf2fd52fe3451cb0b81e70d12f1b47</uuid>
                     <name>MultiFlexi: Total RunTemplates</name>
                     <type>DEPENDENT</type>
                     <key>multiflexi.runtemplates.total</key>
-                    <delay>0</delay>
                     <history>7d</history>
                     <trends>30d</trends>
                     <value_type>UNSIGNED</value_type>
                     <description>Total number of RunTemplates configured</description>
-                    <applications>
-                        <application>
-                            <name>MultiFlexi Statistics</name>
-                        </application>
-                    </applications>
                     <preprocessing>
                         <step>
                             <type>JSONPATH</type>
@@ -164,20 +135,14 @@ License: MIT</description>
                     </master_item>
                 </item>
                 <item>
-                    <uuid>66666666777788889999000011112222</uuid>
+                    <uuid>58dbfa2e222b4285b3196395aadfe67f</uuid>
                     <name>MultiFlexi: Total Jobs</name>
                     <type>DEPENDENT</type>
                     <key>multiflexi.jobs.total</key>
-                    <delay>0</delay>
                     <history>7d</history>
                     <trends>30d</trends>
                     <value_type>UNSIGNED</value_type>
                     <description>Total number of jobs in database</description>
-                    <applications>
-                        <application>
-                            <name>MultiFlexi Statistics</name>
-                        </application>
-                    </applications>
                     <preprocessing>
                         <step>
                             <type>JSONPATH</type>
@@ -192,7 +157,7 @@ License: MIT</description>
                 </item>
                 <!-- Job Status Items -->
                 <item>
-                    <uuid>77777777888899990000111122223333</uuid>
+                    <uuid>30d8079a51ef497792651f6f6756306b</uuid>
                     <name>MultiFlexi: Job Status</name>
                     <type>ZABBIX_ACTIVE</type>
                     <key>multiflexi.jobstatus</key>
@@ -201,15 +166,10 @@ License: MIT</description>
                     <trends>30d</trends>
                     <value_type>TEXT</value_type>
                     <description>Job execution status summary in JSON format</description>
-                    <applications>
-                        <application>
-                            <name>MultiFlexi Jobs</name>
-                        </application>
-                    </applications>
                 </item>
                 <!-- Stale Schedule Items -->
                 <item>
-                    <uuid>88888888999900001111222233334444</uuid>
+                    <uuid>97445a4066f043648e666378c0750389</uuid>
                     <name>MultiFlexi: Stale RunTemplate Schedules</name>
                     <type>ZABBIX_ACTIVE</type>
                     <key>multiflexi.schedule.stale</key>
@@ -218,27 +178,16 @@ License: MIT</description>
                     <trends>0</trends>
                     <value_type>TEXT</value_type>
                     <description>Active run-templates whose next_schedule is stuck more than the tolerance window in the past (in JSON format). A non-empty list means the runtemplate has silently dropped out of CronScheduler's daily rotation - see MultiFlexi\Scheduler::initializeScheduling().</description>
-                    <applications>
-                        <application>
-                            <name>MultiFlexi Statistics</name>
-                        </application>
-                    </applications>
                 </item>
                 <item>
-                    <uuid>99999999000011112222333344445555</uuid>
+                    <uuid>26beff18da7049cda3032e5dee169705</uuid>
                     <name>MultiFlexi: Stale RunTemplate Count</name>
                     <type>DEPENDENT</type>
                     <key>multiflexi.schedule.stale.count</key>
-                    <delay>0</delay>
                     <history>7d</history>
                     <trends>30d</trends>
                     <value_type>UNSIGNED</value_type>
                     <description>Number of active run-templates whose next_schedule is stuck in the past</description>
-                    <applications>
-                        <application>
-                            <name>MultiFlexi Statistics</name>
-                        </application>
-                    </applications>
                     <preprocessing>
                         <step>
                             <type>JSONPATH</type>
@@ -250,12 +199,23 @@ License: MIT</description>
                     <master_item>
                         <key>multiflexi.schedule.stale</key>
                     </master_item>
+                    <triggers>
+                        <trigger>
+                            <uuid>111c1fa6c9254238bff5a3e16f55b278</uuid>
+                            <expression>last(/MultiFlexi by Zabbix agent/multiflexi.schedule.stale.count)&gt;0</expression>
+                            <name>MultiFlexi: {ITEM.VALUE} RunTemplate(s) have a stale schedule</name>
+                            <priority>HIGH</priority>
+                            <description>One or more active RunTemplates have a next_schedule stuck in the past and have silently dropped out of the daily cron rotation - their jobs will not run again on their own.
+
+This typically happens when a job never reaches normal completion (crash, OOM-kill, executor failure outside the standard fail path), leaving next_schedule set. Run `multiflexi-cli run-template:stale --format=json` for details, and `multiflexi-cli queue:fix` to reset the affected RunTemplates back into the schedule.</description>
+                        </trigger>
+                    </triggers>
                 </item>
             </items>
             <discovery_rules>
                 <!-- Company Discovery -->
                 <discovery_rule>
-                    <uuid>aaaaaaaa111122223333444455556666</uuid>
+                    <uuid>6ecca7125a7a43be9e2a77ef49fe0754</uuid>
                     <name>MultiFlexi: Company Discovery</name>
                     <type>ZABBIX_ACTIVE</type>
                     <key>multiflexi.company.lld</key>
@@ -264,7 +224,7 @@ License: MIT</description>
                     <description>Discovers companies/tenants in MultiFlexi</description>
                     <item_prototypes>
                         <item_prototype>
-                            <uuid>bbbbbbbb222233334444555566667777</uuid>
+                            <uuid>55b7a00ebff341a5956cba138054a2eb</uuid>
                             <name>Company {#COMPANY_NAME}: Status</name>
                             <type>ZABBIX_ACTIVE</type>
                             <key>multiflexi.company.status[{#COMPANY_CODE}]</key>
@@ -273,17 +233,12 @@ License: MIT</description>
                             <trends>30d</trends>
                             <value_type>UNSIGNED</value_type>
                             <description>Status of company {#COMPANY_NAME} (1=enabled, 0=disabled)</description>
-                            <applications>
-                                <application>
-                                    <name>MultiFlexi Companies</name>
-                                </application>
-                            </applications>
                         </item_prototype>
                     </item_prototypes>
                     <trigger_prototypes>
                         <trigger_prototype>
-                            <uuid>cccccccc333344445555666677778888</uuid>
-                            <expression>{MultiFlexi by Zabbix agent:multiflexi.company.status[{#COMPANY_CODE}].last()}=0</expression>
+                            <uuid>b49aaef63f234ccbb45d6f5231b5e47c</uuid>
+                            <expression>last(/MultiFlexi by Zabbix agent/multiflexi.company.status[{#COMPANY_CODE}])=0</expression>
                             <name>Company {#COMPANY_NAME} is disabled</name>
                             <priority>INFO</priority>
                             <description>Company {#COMPANY_NAME} ({#COMPANY_CODE}) has been disabled in MultiFlexi.</description>
@@ -291,7 +246,7 @@ License: MIT</description>
                     </trigger_prototypes>
                     <graph_prototypes>
                         <graph_prototype>
-                            <uuid>dddddddd444455556666777788889999</uuid>
+                            <uuid>3cb778a5653b47dbb2b8522a2f3a87b6</uuid>
                             <name>Company {#COMPANY_NAME}: Activity</name>
                             <graph_items>
                                 <graph_item>
@@ -307,7 +262,7 @@ License: MIT</description>
                 </discovery_rule>
                 <!-- RunTemplate Discovery -->
                 <discovery_rule>
-                    <uuid>eeeeeeee555566667777888899990000</uuid>
+                    <uuid>c543c2bc0e3746b0b14851d489081702</uuid>
                     <name>MultiFlexi: RunTemplate Discovery</name>
                     <type>ZABBIX_ACTIVE</type>
                     <key>multiflexi.runtemplate.lld</key>
@@ -316,25 +271,7 @@ License: MIT</description>
                     <description>Discovers RunTemplates with their applications and companies</description>
                     <item_prototypes>
                         <item_prototype>
-                            <uuid>ffffffff666677778888999900001111</uuid>
-                            <name>{#COMPANY_NAME} - {#APPNAME}: Job Success Rate</name>
-                            <type>CALCULATED</type>
-                            <key>multiflexi.job.success_rate[{#COMPANY_CODE},{#APPNAME_CODE}]</key>
-                            <delay>5m</delay>
-                            <history>30d</history>
-                            <trends>90d</trends>
-                            <value_type>FLOAT</value_type>
-                            <units>%</units>
-                            <params>100</params>
-                            <description>Success rate for {#APPNAME} jobs in {#COMPANY_NAME}</description>
-                            <applications>
-                                <application>
-                                    <name>MultiFlexi Jobs</name>
-                                </application>
-                            </applications>
-                        </item_prototype>
-                        <item_prototype>
-                            <uuid>00000000777788889999000011112222</uuid>
+                            <uuid>ce63dde02a3b4dddb032c1851187acc2</uuid>
                             <name>{#COMPANY_NAME} - {#APPNAME}: Last Execution Status</name>
                             <type>ZABBIX_ACTIVE</type>
                             <key>multiflexi.job.last_status[{#RUNTEMPLATE}]</key>
@@ -343,11 +280,6 @@ License: MIT</description>
                             <trends>30d</trends>
                             <value_type>UNSIGNED</value_type>
                             <description>Last execution status for RunTemplate {#RUNTEMPLATE_NAME} (0=success, 1=failed, 2=running)</description>
-                            <applications>
-                                <application>
-                                    <name>MultiFlexi Jobs</name>
-                                </application>
-                            </applications>
                             <valuemap>
                                 <name>MultiFlexi Job Status</name>
                             </valuemap>
@@ -355,8 +287,8 @@ License: MIT</description>
                     </item_prototypes>
                     <trigger_prototypes>
                         <trigger_prototype>
-                            <uuid>11111111888899990000111122223333</uuid>
-                            <expression>{MultiFlexi by Zabbix agent:multiflexi.job.last_status[{#RUNTEMPLATE}].last()}=1</expression>
+                            <uuid>e69ffa313c2b43ae90e268a1fc0d27c0</uuid>
+                            <expression>last(/MultiFlexi by Zabbix agent/multiflexi.job.last_status[{#RUNTEMPLATE}])=1</expression>
                             <name>{#COMPANY_NAME} - {#APPNAME}: Job failed</name>
                             <priority>HIGH</priority>
                             <description>RunTemplate {#RUNTEMPLATE_NAME} for {#APPNAME} in {#COMPANY_NAME} has failed.
@@ -365,42 +297,12 @@ Company: {#COMPANY_NAME} ({#COMPANY_CODE})
 Application: {#APPNAME} ({#APPNAME_CODE})
 Interval: {#INTERVAL}
 RunTemplate ID: {#RUNTEMPLATE}</description>
-                            <dependencies>
-                                <dependency>
-                                    <name>MultiFlexi: Service is down</name>
-                                    <expression>{MultiFlexi by Zabbix agent:net.tcp.service[http,localhost,80].last()}=0</expression>
-                                </dependency>
-                            </dependencies>
-                        </trigger_prototype>
-                        <trigger_prototype>
-                            <uuid>22222222999900001111222233334444</uuid>
-                            <expression>{MultiFlexi by Zabbix agent:multiflexi.job.success_rate[{#COMPANY_CODE},{#APPNAME_CODE}].avg(1h)}&lt;80</expression>
-                            <name>{#COMPANY_NAME} - {#APPNAME}: Low success rate</name>
-                            <priority>WARNING</priority>
-                            <description>Success rate for {#APPNAME} in {#COMPANY_NAME} is below 80% (current: {ITEM.LASTVALUE}).
-
-This may indicate recurring issues with the application or its configuration.</description>
                         </trigger_prototype>
                     </trigger_prototypes>
-                    <graph_prototypes>
-                        <graph_prototype>
-                            <uuid>33333333000011112222333344445555</uuid>
-                            <name>{#COMPANY_NAME} - {#APPNAME}: Job Execution</name>
-                            <graph_items>
-                                <graph_item>
-                                    <color>1A7C11</color>
-                                    <item>
-                                        <host>MultiFlexi by Zabbix agent</host>
-                                        <key>multiflexi.job.success_rate[{#COMPANY_CODE},{#APPNAME_CODE}]</key>
-                                    </item>
-                                </graph_item>
-                            </graph_items>
-                        </graph_prototype>
-                    </graph_prototypes>
                 </discovery_rule>
                 <!-- Job Discovery -->
                 <discovery_rule>
-                    <uuid>44444444111122223333444455556666</uuid>
+                    <uuid>3f332e8b8c894397a3695aec46e1f328</uuid>
                     <name>MultiFlexi: Job Discovery</name>
                     <type>ZABBIX_ACTIVE</type>
                     <key>multiflexi.job.lld</key>
@@ -410,7 +312,7 @@ This may indicate recurring issues with the application or its configuration.</d
                 </discovery_rule>
                 <!-- Action Discovery -->
                 <discovery_rule>
-                    <uuid>55555555222233334444555566667777</uuid>
+                    <uuid>1dc6bbc73fd84012961476f160c723c2</uuid>
                     <name>MultiFlexi: Action Discovery</name>
                     <type>ZABBIX_ACTIVE</type>
                     <key>multiflexi.action.lld</key>
@@ -419,43 +321,154 @@ This may indicate recurring issues with the application or its configuration.</d
                     <description>Discovers RunTemplates with Zabbix actions configured</description>
                     <item_prototypes>
                         <item_prototype>
-                            <uuid>66666666333344445555666677778888</uuid>
+                            <uuid>5164cbadb889429e9a5e7b46b8f56bb7</uuid>
                             <name>{#RUN_TEMPLATE_NAME}: Success Action Data</name>
-                            <type>ZABBIX_ACTIVE</type>
+                            <type>TRAP</type>
                             <key>zabbix_action[{#ZABBIX_KEY_SUCCESS}]</key>
-                            <delay>0</delay>
                             <history>7d</history>
                             <trends>0</trends>
                             <value_type>TEXT</value_type>
                             <description>Data sent to Zabbix on successful execution of {#RUN_TEMPLATE_NAME}</description>
-                            <applications>
-                                <application>
-                                    <name>MultiFlexi Actions</name>
-                                </application>
-                            </applications>
                         </item_prototype>
                         <item_prototype>
-                            <uuid>77777777444455556666777788889999</uuid>
+                            <uuid>9af6d4ec0a174637856cef22ef433375</uuid>
                             <name>{#RUN_TEMPLATE_NAME}: Failure Action Data</name>
-                            <type>ZABBIX_ACTIVE</type>
+                            <type>TRAP</type>
                             <key>zabbix_action[{#ZABBIX_KEY_FAIL}]</key>
-                            <delay>0</delay>
                             <history>7d</history>
                             <trends>0</trends>
                             <value_type>TEXT</value_type>
                             <description>Data sent to Zabbix on failed execution of {#RUN_TEMPLATE_NAME}</description>
-                            <applications>
-                                <application>
-                                    <name>MultiFlexi Actions</name>
-                                </application>
-                            </applications>
                         </item_prototype>
                     </item_prototypes>
+                </discovery_rule>
+                <!-- Credential Availability Discovery -->
+                <discovery_rule>
+                    <uuid>20ee95cdf4fd415682c3cb907d840295</uuid>
+                    <name>MultiFlexi: Credential Availability Discovery</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>multiflexi.credential.lld</key>
+                    <delay>1h</delay>
+                    <lifetime>7d</lifetime>
+                    <description>Discovers MultiFlexi credentials and reports their availability state. Credentials whose type implements a live check (checkableCredentialInterface) report the real checkAvailability() result; credentials without one still get flagged Misconfigured when a required field is empty.</description>
+                    <filter>
+                        <conditions>
+                            <condition>
+                                <macro>{#CREDENTIAL_TYPE}</macro>
+                                <value>{$CRED.AVAILABILITY.EXCLUDE}</value>
+                                <operator>NOT_MATCHES_REGEX</operator>
+                                <formulaid>A</formulaid>
+                            </condition>
+                        </conditions>
+                        <evaltype>AND_OR</evaltype>
+                    </filter>
+                    <item_prototypes>
+                        <item_prototype>
+                            <uuid>3aa9a9eae1384b1e8fbbd0f5828a4e00</uuid>
+                            <name>Credential {#CREDENTIAL_NAME}: Availability check</name>
+                            <type>ZABBIX_ACTIVE</type>
+                            <key>multiflexi.credential.check[{#CREDENTIAL_ID}]</key>
+                            <delay>{$CRED.AVAILABILITY.INTERVAL:"{#CREDENTIAL_TYPE}"}</delay>
+                            <history>7d</history>
+                            <trends>0</trends>
+                            <value_type>TEXT</value_type>
+                            <description>Full checkAvailability() result for credential {#CREDENTIAL_NAME} ({#CREDENTIAL_TYPE}) as JSON: state, message, checked_at, ttl, details. Polled once per cycle; the State/Message/Details items below are derived from this via JSONPath preprocessing so the (possibly network-bound) check only runs once.</description>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>6a976cc41d95499cbc49934a2233ea3a</uuid>
+                            <name>Credential {#CREDENTIAL_NAME}: State</name>
+                            <type>DEPENDENT</type>
+                            <key>multiflexi.credential.state[{#CREDENTIAL_ID}]</key>
+                            <history>7d</history>
+                            <trends>30d</trends>
+                            <value_type>UNSIGNED</value_type>
+                            <description>Availability state of credential {#CREDENTIAL_NAME} (0=Available, 1=Degraded, 2=Unavailable, 3=Misconfigured, 4=Unknown)</description>
+                            <valuemap>
+                                <name>MultiFlexi Credential State</name>
+                            </valuemap>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <parameters>
+                                        <parameter>$.state_code</parameter>
+                                    </parameters>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>multiflexi.credential.check[{#CREDENTIAL_ID}]</key>
+                            </master_item>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>41a22f0bb5e34f0eb742a2c7306c839f</uuid>
+                            <name>Credential {#CREDENTIAL_NAME}: Message</name>
+                            <type>DEPENDENT</type>
+                            <key>multiflexi.credential.message[{#CREDENTIAL_ID}]</key>
+                            <history>7d</history>
+                            <trends>0</trends>
+                            <value_type>TEXT</value_type>
+                            <description>Human-readable availability message for credential {#CREDENTIAL_NAME}</description>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <parameters>
+                                        <parameter>$.message</parameter>
+                                    </parameters>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>multiflexi.credential.check[{#CREDENTIAL_ID}]</key>
+                            </master_item>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>453c2d95901541d0b4865d13d2c5c56c</uuid>
+                            <name>Credential {#CREDENTIAL_NAME}: Details</name>
+                            <type>DEPENDENT</type>
+                            <key>multiflexi.credential.details[{#CREDENTIAL_ID}]</key>
+                            <history>7d</history>
+                            <trends>0</trends>
+                            <value_type>TEXT</value_type>
+                            <description>Opaque JSON passthrough of the checkAvailability() details array for credential {#CREDENTIAL_NAME}. Field names are prototype-specific and not standardized across credential types - for troubleshooting, not alerting.</description>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <parameters>
+                                        <parameter>$.details</parameter>
+                                    </parameters>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>multiflexi.credential.check[{#CREDENTIAL_ID}]</key>
+                            </master_item>
+                        </item_prototype>
+                    </item_prototypes>
+                    <trigger_prototypes>
+                        <trigger_prototype>
+                            <uuid>f75dbc461233424d88033086136cf49a</uuid>
+                            <expression>last(/MultiFlexi by Zabbix agent/multiflexi.credential.state[{#CREDENTIAL_ID}])=3</expression>
+                            <name>Credential {#CREDENTIAL_NAME} is misconfigured</name>
+                            <priority>WARNING</priority>
+                            <description>Credential {#CREDENTIAL_NAME} ({#CREDENTIAL_TYPE}) in {#COMPANY_NAME} is missing required configuration and cannot be used. See the credential's Message/Details items or the MultiFlexi credential UI for which fields are missing.</description>
+                        </trigger_prototype>
+                        <trigger_prototype>
+                            <uuid>79254ce98627467cbae19dd23e8914c4</uuid>
+                            <expression>last(/MultiFlexi by Zabbix agent/multiflexi.credential.state[{#CREDENTIAL_ID}])=2</expression>
+                            <name>Credential {#CREDENTIAL_NAME} API is unreachable</name>
+                            <priority>HIGH</priority>
+                            <description>Credential {#CREDENTIAL_NAME} ({#CREDENTIAL_TYPE}) in {#COMPANY_NAME} is fully configured but its endpoint could not be reached. Jobs depending on this credential will fail.</description>
+                        </trigger_prototype>
+                        <trigger_prototype>
+                            <uuid>8a939597cb4849ee9c136511b279b4ab</uuid>
+                            <expression>last(/MultiFlexi by Zabbix agent/multiflexi.credential.state[{#CREDENTIAL_ID}])=1</expression>
+                            <name>Credential {#CREDENTIAL_NAME} is degraded</name>
+                            <priority>AVERAGE</priority>
+                            <description>Credential {#CREDENTIAL_NAME} ({#CREDENTIAL_TYPE}) in {#COMPANY_NAME} is reachable but impaired (e.g. remote service busy or rate-limited).</description>
+                        </trigger_prototype>
+                    </trigger_prototypes>
                 </discovery_rule>
             </discovery_rules>
             <httptests>
                 <httptest>
-                    <uuid>88888888555566667777888899990000</uuid>
+                    <uuid>e04f3ff830ff46199d9f7a8244676768</uuid>
                     <name>MultiFlexi Web Interface</name>
                     <delay>1m</delay>
                     <attempts>3</attempts>
@@ -470,41 +483,6 @@ This may indicate recurring issues with the application or its configuration.</d
                     </steps>
                 </httptest>
             </httptests>
-            <triggers>
-                <trigger>
-                    <uuid>99999999666677778888999900001111</uuid>
-                    <expression>{MultiFlexi by Zabbix agent:net.tcp.service[http,localhost,80].last()}=0</expression>
-                    <name>MultiFlexi: Service is down</name>
-                    <priority>DISASTER</priority>
-                    <description>MultiFlexi web service is not responding on port 80.
-
-This may indicate:
-- Apache/nginx service is down
-- MultiFlexi application error
-- Network connectivity issue</description>
-                </trigger>
-                <trigger>
-                    <uuid>aaaaaaaa777788889999000011112222</uuid>
-                    <expression>{MultiFlexi by Zabbix agent:multiflexi.companies.total.nodata(30m)}=1</expression>
-                    <name>MultiFlexi: No data received</name>
-                    <priority>WARNING</priority>
-                    <description>No system status data received from MultiFlexi in 30 minutes.
-
-Check:
-- Zabbix agent is running
-- multiflexi-cli is accessible
-- Database connectivity</description>
-                </trigger>
-                <trigger>
-                    <uuid>f5603e4c88c34d6fa4703d3a60202472</uuid>
-                    <expression>{MultiFlexi by Zabbix agent:multiflexi.schedule.stale.count.last()}&gt;0</expression>
-                    <name>MultiFlexi: {ITEM.VALUE} RunTemplate(s) have a stale schedule</name>
-                    <priority>HIGH</priority>
-                    <description>One or more active RunTemplates have a next_schedule stuck in the past and have silently dropped out of the daily cron rotation - their jobs will not run again on their own.
-
-This typically happens when a job never reaches normal completion (crash, OOM-kill, executor failure outside the standard fail path), leaving next_schedule set. Run `multiflexi-cli run-template:stale --format=json` for details, and `multiflexi-cli queue:fix` to reset the affected RunTemplates back into the schedule.</description>
-                </trigger>
-            </triggers>
             <macros>
                 <macro>
                     <macro>{$MULTIFLEXI.SUCCESS_RATE.MIN}</macro>
@@ -516,10 +494,20 @@ This typically happens when a job never reaches normal completion (crash, OOM-ki
                     <value>http://localhost/multiflexi</value>
                     <description>MultiFlexi web interface URL</description>
                 </macro>
+                <macro>
+                    <macro>{$CRED.AVAILABILITY.INTERVAL}</macro>
+                    <value>5m</value>
+                    <description>Default polling interval for credential availability checks (multiflexi.credential.check[*]). Override per credential type with a macro context, e.g. {$CRED.AVAILABILITY.INTERVAL:"RaiffeisenBank"} = 30m, for services with tight API rate limits - no template/code change needed.</description>
+                </macro>
+                <macro>
+                    <macro>{$CRED.AVAILABILITY.EXCLUDE}</macro>
+                    <value>^$</value>
+                    <description>Regex matched against {#CREDENTIAL_TYPE}; any matching credential type is excluded from Credential Availability Discovery entirely. Default "^$" only matches an empty string, which no real credential type name ever is, so nothing is excluded. E.g. set to "^(RaiffeisenBank)$" to stop discovering/checking that type without touching the template. Do not set this to an empty string - an empty regex matches everything, which would silently exclude every credential from discovery.</description>
+                </macro>
             </macros>
             <valuemaps>
                 <valuemap>
-                    <uuid>bbbbbbbb888899990000111122223333</uuid>
+                    <uuid>a2e3819a562a4db08ef25dbcebd3f34c</uuid>
                     <name>MultiFlexi Job Status</name>
                     <mappings>
                         <mapping>
@@ -537,7 +525,7 @@ This typically happens when a job never reaches normal completion (crash, OOM-ki
                     </mappings>
                 </valuemap>
                 <valuemap>
-                    <uuid>cccccccc999900001111222233334444</uuid>
+                    <uuid>5d560fec2eb941498518fd7bf175ed0a</uuid>
                     <name>Service state</name>
                     <mappings>
                         <mapping>
@@ -550,12 +538,38 @@ This typically happens when a job never reaches normal completion (crash, OOM-ki
                         </mapping>
                     </mappings>
                 </valuemap>
+                <valuemap>
+                    <uuid>2e0e6464fa3c4b8bb4ff80f583ae0d32</uuid>
+                    <name>MultiFlexi Credential State</name>
+                    <mappings>
+                        <mapping>
+                            <value>0</value>
+                            <newvalue>Available</newvalue>
+                        </mapping>
+                        <mapping>
+                            <value>1</value>
+                            <newvalue>Degraded</newvalue>
+                        </mapping>
+                        <mapping>
+                            <value>2</value>
+                            <newvalue>Unavailable</newvalue>
+                        </mapping>
+                        <mapping>
+                            <value>3</value>
+                            <newvalue>Misconfigured</newvalue>
+                        </mapping>
+                        <mapping>
+                            <value>4</value>
+                            <newvalue>Unknown</newvalue>
+                        </mapping>
+                    </mappings>
+                </valuemap>
             </valuemaps>
         </template>
     </templates>
     <graphs>
         <graph>
-            <uuid>dddddddd000011112222333344445555</uuid>
+            <uuid>558e685c67dc4ce09c7f794229f7cf1a</uuid>
             <name>MultiFlexi: Entity Statistics</name>
             <graph_items>
                 <graph_item>

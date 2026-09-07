@@ -1,5 +1,26 @@
+multiflexi-zabbix (2.4.3) UNRELEASED; urgency=medium
+
+  [ CyberVitexus ]
+  * Add Zabbix LLD for per-credential endpoint availability monitoring
+    (states Available/Degraded/Unavailable/Misconfigured/Unknown; High-
+    severity trigger on Unavailable).
+  * Fix fatal error in credential availability check: initialize
+    MultiFlexi\Defaults before invoking checkAvailability()
+    (RaiffeisenBank and others read Defaults::$MULTIFLEXI_TMP during
+    construction).
+  * Fix zabbix/multiflexi-template.xml to actually import into current
+    Zabbix versions (invalid trigger syntax, wrong trapper item type,
+    non-UUIDv4 uuids, a broken calculated item, and other schema issues
+    found by importing it into a live Zabbix 7.4 server).
+  * Fix default value of {$CRED.AVAILABILITY.EXCLUDE}: an empty regex
+    matches every string, so the previous empty default silently
+    excluded every credential from discovery. Default is now "^$".
+
+ -- CyberVitexus <cybervitexus@gmail.com>  Sun, 06 Sep 2026 17:30:00 +0200
+
 multiflexi-zabbix (2.4.2) UNRELEASED; urgency=medium
 
+  [ Vítězslav Dvořák ]
   * Add watchdog item/trigger for RunTemplates whose next_schedule is
     stuck in the past (multiflexi.schedule.stale, backed by
     multiflexi-cli run-template:stale).
