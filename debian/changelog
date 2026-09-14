@@ -1,3 +1,17 @@
+multiflexi-zabbix (2.4.4) UNRELEASED; urgency=medium
+
+  * debian/multiflexi-zabbix.postinst: grant the zabbix agent user
+    read-only ACL access to /etc/multiflexi (and multiflexi.env), since
+    the directory is locked down to multiflexi:www-data 0750 to protect
+    DB_PASSWORD/ENCRYPTION_MASTER_KEY. Without this, every UserParameter
+    that shells out to multiflexi-cli or multiflexi-zabbix-lld fails with
+    a misleading "config file does not exist" error (it's actually
+    EACCES), which surfaces in Zabbix as e.g. "Multi Apptemplate LLD is
+    not running" / RunTemplate Discovery never returning data. Adds
+    `acl` to Depends for setfacl.
+
+ -- CyberVitexus <cybervitexus@gmail.com>  Mon, 14 Sep 2026 09:10:00 +0200
+
 multiflexi-zabbix (2.4.3) UNRELEASED; urgency=medium
 
   [ CyberVitexus ]

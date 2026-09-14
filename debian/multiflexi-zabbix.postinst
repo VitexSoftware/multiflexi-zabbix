@@ -35,6 +35,17 @@ if [ "$1" = "configure" ]; then
     [ -n "$ZABBIX_HOST" ] && update_config "ZABBIX_HOST" "$ZABBIX_HOST"
     [ -n "$ZABBIX_URL" ] && update_config "ZABBIX_URL" "$ZABBIX_URL"
     [ -n "$USE_ZABBIX_SENDER" ] && update_config "USE_ZABBIX_SENDER" "$USE_ZABBIX_SENDER"
+
+    # Our UserParameter scripts (multiflexi-cli, multiflexi-zabbix-lld, ...)
+    # run as the zabbix agent's own user, but $CONFIG_DIR is locked down to
+    # multiflexi:www-data 0750 (it holds DB_PASSWORD/ENCRYPTION_MASTER_KEY),
+    # so that user can't otherwise even traverse into it. Grant read-only
+    # access via ACL rather than widening the directory or adding zabbix to
+    # an unrelated group. Safe to re-run on every upgrade.
+    if getent passwd zabbix > /dev/null 2>&1 && [ -d "$CONFIG_DIR" ] && command -v setfacl > /dev/null 2>&1; then
+        setfacl -m u:zabbix:r-x "$CONFIG_DIR" || true
+        [ -f "$CONFIG_FILE" ] && setfacl -m u:zabbix:r-- "$CONFIG_FILE" || true
+    fi
 fi
 
 if [ "$1" = "configure" ] || [ "$1" = "abort-upgrade" ] || [ "$1" = "abort-deconfigure" ] || [ "$1" = "abort-remove" ] ; then
