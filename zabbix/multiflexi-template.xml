@@ -458,7 +458,7 @@ RunTemplate ID: {#RUNTEMPLATE}</description>
                         </trigger_prototype>
                         <trigger_prototype>
                             <uuid>8a939597cb4849ee9c136511b279b4ab</uuid>
-                            <expression>last(/MultiFlexi by Zabbix agent/multiflexi.credential.state[{#CREDENTIAL_ID}])=1</expression>
+                            <expression>min(/MultiFlexi by Zabbix agent/multiflexi.credential.state[{#CREDENTIAL_ID}],15m)=1</expression>
                             <name>Credential {#CREDENTIAL_NAME} is degraded</name>
                             <priority>AVERAGE</priority>
                             <description>Credential {#CREDENTIAL_NAME} ({#CREDENTIAL_TYPE}) in {#COMPANY_NAME} is reachable but impaired (e.g. remote service busy or rate-limited).</description>
