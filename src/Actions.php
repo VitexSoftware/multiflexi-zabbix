@@ -38,29 +38,42 @@ $lldData = [];
 $runTemplater = new \MultiFlexi\RunTemplate();
 $runTemplater->logBanner();
 
-$enabled = $runTemplater->listingQuery()->disableSmartJoin()->where('runtemplate.active', true)->where("success LIKE '%\"Zabbix\";b:1;%'")->whereOr("fail LIKE '%\"Zabbix\";b:1;%'")
-    ->select(['runtemplate.id AS runtemplate_id', 'runtemplate.name AS runtemplate_name'])
+$enabled = $runTemplater->listingQuery()->disableSmartJoin()
+    ->select(['runtemplate.id AS runtemplate_id', 'runtemplate.name AS runtemplate_name', 'runtemplate.success', 'runtemplate.fail'], true)
     ->leftJoin('company ON company.id = runtemplate.company_id')
-    ->select(['company.id AS company_id', 'company.name AS company_name'])
+    ->select(['company.id AS company_id', 'company.name AS company_name', 'company.slug AS company_code'])
     ->leftJoin('apps ON apps.id = runtemplate.app_id')
-    ->select(['apps.id AS app_id', 'apps.name AS app_name']);
+    ->select(['apps.id AS app_id', 'apps.name AS app_name', 'apps.code AS app_code'])
+    ->where('runtemplate.active', true)
+    ->where("(runtemplate.success LIKE '%\"Zabbix\";b:1;%' OR runtemplate.fail LIKE '%\"Zabbix\";b:1;%')");
 
 $configer = new ActionConfig();
 
+// Same key logic as MultiFlexi\Action\Zabbix::perform(): empty or placeholder key means the default one.
+$resolveKey = static function (array $rt, string $mode) use ($configer): string {
+    $key = (string) $configer->listingQuery()->select('value', true)->where('module', 'Zabbix')->where('keyname', 'key')->where('runtemplate_id', $rt['runtemplate_id'])->where('mode', $mode)->fetchColumn();
+
+    return ($key === '' || $key === '{COMPANY_CODE}-{APP_CODE}-{RUNTEMPLATE_ID}-data') ? \MultiFlexi\Action\Zabbix::buildDefaultKey((string) $rt['company_code'], (string) $rt['app_code'], (int) $rt['runtemplate_id']) : $key;
+};
+
 foreach ($enabled as $runTemplateData) {
-    $succesActions = unserialize($runTemplateData['success']);
-    $failActions = unserialize($runTemplateData['fail']);
+    $succesActions = (array) @unserialize((string) $runTemplateData['success']);
+    $failActions = (array) @unserialize((string) $runTemplateData['fail']);
+    $keySuccess = empty($succesActions['Zabbix']) ? '' : $resolveKey($runTemplateData, 'success');
+    $keyFail = empty($failActions['Zabbix']) ? '' : $resolveKey($runTemplateData, 'fail');
+
     $lldData[] = [
-        '{#RUN_TEMPLATE_ID}' => $runTemplateData['id'],
-        '{#RUN_TEMPLATE_NAME}' => empty($runTemplateData['name']) ? '⚗️ #'.$runTemplateData['id'] : $runTemplateData['name'],
+        '{#RUN_TEMPLATE_ID}' => $runTemplateData['runtemplate_id'],
+        '{#RUN_TEMPLATE_NAME}' => empty($runTemplateData['runtemplate_name']) ? '⚗️ #'.$runTemplateData['runtemplate_id'] : $runTemplateData['runtemplate_name'],
         '{#COMPANY_ID}' => $runTemplateData['company_id'],
         '{#COMPANY_NAME}' => $runTemplateData['company_name'],
-        '{#APP_ID}' => $runTemplateData['id'],
+        '{#APP_ID}' => $runTemplateData['app_id'],
         '{#APP_NAME}' => $runTemplateData['app_name'],
         '{#SUCCESS_ACTIONS}' => $succesActions,
         '{#FAIL_ACTIONS}' => $failActions,
-        '{#ZABBIX_KEY_SUCCESS}' => $succesActions['Zabbix'] ? $configer->listingQuery()->select('value', true)->where('module', 'Zabbix')->where('keyname', 'key')->where('runtemplate_id', $runTemplateData['id'])->where('mode', 'success')->fetchColumn() : '',
-        '{#ZABBIX_KEY_FAIL}' => $failActions['Zabbix'] ? $configer->listingQuery()->select('value', true)->where('module', 'Zabbix')->where('keyname', 'key')->where('runtemplate_id', $runTemplateData['id'])->where('mode', 'fail')->fetchColumn() : '',
+        '{#ZABBIX_KEY_SUCCESS}' => $keySuccess,
+        // Success and failure sharing one key would create duplicate items; failure is only discoverable on its own key.
+        '{#ZABBIX_KEY_FAIL}' => $keyFail === $keySuccess ? '' : $keyFail,
     ];
 }
 

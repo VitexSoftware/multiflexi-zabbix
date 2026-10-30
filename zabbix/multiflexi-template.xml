@@ -324,7 +324,7 @@ RunTemplate ID: {#RUNTEMPLATE}</description>
                             <uuid>5164cbadb889429e9a5e7b46b8f56bb7</uuid>
                             <name>{#RUN_TEMPLATE_NAME}: Success Action Data</name>
                             <type>TRAP</type>
-                            <key>zabbix_action[{#ZABBIX_KEY_SUCCESS}]</key>
+                            <key>zabbix_action-[{#ZABBIX_KEY_SUCCESS}]</key>
                             <history>7d</history>
                             <trends>0</trends>
                             <value_type>TEXT</value_type>
@@ -334,13 +334,27 @@ RunTemplate ID: {#RUNTEMPLATE}</description>
                             <uuid>9af6d4ec0a174637856cef22ef433375</uuid>
                             <name>{#RUN_TEMPLATE_NAME}: Failure Action Data</name>
                             <type>TRAP</type>
-                            <key>zabbix_action[{#ZABBIX_KEY_FAIL}]</key>
+                            <key>zabbix_action-[{#ZABBIX_KEY_FAIL}]</key>
                             <history>7d</history>
                             <trends>0</trends>
                             <value_type>TEXT</value_type>
                             <description>Data sent to Zabbix on failed execution of {#RUN_TEMPLATE_NAME}</description>
                         </item_prototype>
                     </item_prototypes>
+                    <trigger_prototypes>
+                        <trigger_prototype>
+                            <uuid>7d0c5a41f2b94e0fa63c1b8e9d4a2f75</uuid>
+                            <expression>nodata(/MultiFlexi by Zabbix agent/zabbix_action-[{#ZABBIX_KEY_FAIL}],{$MULTIFLEXI.ACTION.FAIL.WINDOW})=0</expression>
+                            <name>{#COMPANY_NAME} - {#APP_NAME}: RunTemplate {#RUN_TEMPLATE_NAME} failed</name>
+                            <priority>HIGH</priority>
+                            <description>The failure action of RunTemplate #{#RUN_TEMPLATE_ID} ({#RUN_TEMPLATE_NAME}) reported to Zabbix within the last {$MULTIFLEXI.ACTION.FAIL.WINDOW}.
+
+Company: {#COMPANY_NAME}
+Application: {#APP_NAME}
+
+The problem clears on its own once no failure was reported for the whole window.</description>
+                        </trigger_prototype>
+                    </trigger_prototypes>
                 </discovery_rule>
                 <!-- Credential Availability Discovery -->
                 <discovery_rule>
@@ -484,6 +498,11 @@ RunTemplate ID: {#RUNTEMPLATE}</description>
                 </httptest>
             </httptests>
             <macros>
+                <macro>
+                    <macro>{$MULTIFLEXI.ACTION.FAIL.WINDOW}</macro>
+                    <value>26h</value>
+                    <description>How long a RunTemplate failure reported by its Zabbix action keeps the problem open (a bit over the longest expected run interval)</description>
+                </macro>
                 <macro>
                     <macro>{$MULTIFLEXI.SUCCESS_RATE.MIN}</macro>
                     <value>80</value>

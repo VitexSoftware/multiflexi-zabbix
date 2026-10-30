@@ -67,12 +67,19 @@ class Zabbix extends \MultiFlexi\CommonAction
         $server = \Ease\Shared::cfg('ZABBIX_SERVER');
 
         if ($server) {
-            $zabbixKey = 'zabbix_action-['.(empty($this->getDataValue('key') || ($this->getDataValue('key') === '{COMPANY_CODE}-{APP_CODE}-{RUNTEMPLATE_ID}-data')) ? $this->defaultKey() : $this->getDataValue('key')).']';
+            $configuredKey = (string) $this->getDataValue('key');
+            $zabbixKey = 'zabbix_action-['.(($configuredKey === '' || $configuredKey === '{COMPANY_CODE}-{APP_CODE}-{RUNTEMPLATE_ID}-data') ? $this->defaultKey() : $configuredKey).']';
             $dataForZabbix = null;
             $metricsfile = $this->getDataValue('metricsfile');
 
             if (empty($metricsfile)) {
                 $dataForZabbix = stripslashes((string) $job->getDataValue('stdout'));
+                $exitCode = $job->getDataValue('exitcode');
+
+                // A failed job often has empty stdout; report the cause so the failure reaches Zabbix with its reason
+                if (empty($dataForZabbix) && $exitCode !== null && (int) $exitCode !== 0) {
+                    $dataForZabbix = trim(sprintf(_('Job failed with exit code %d').': %s', (int) $exitCode, mb_substr(trim($job->getErrorOutput()), -1000)), ': ');
+                }
             } else {
                 if (file_exists($metricsfile)) {
                     $dataForZabbix = file_get_contents($metricsfile); // TODO: Use Executor
@@ -111,6 +118,18 @@ class Zabbix extends \MultiFlexi\CommonAction
 
     public function defaultKey(): string
     {
-        return $this->runtemplate->getCompany()->getDataValue('code').'-'.$this->runtemplate->getApplication()->getDataValue('code').'-'.$this->runtemplate->getMyKey().'-data';
+        $company = $this->runtemplate->getCompany();
+        // company.code was renamed to company.slug; keep the fallback for databases not migrated yet
+        $companyCode = (string) ($company->getDataValue('slug') ?: $company->getDataValue('code'));
+
+        return self::buildDefaultKey($companyCode, (string) $this->runtemplate->getApplication()->getDataValue('code'), (int) $this->runtemplate->getMyKey());
+    }
+
+    /**
+     * Default trapper key part; shared with the Action LLD so discovered items match what is sent.
+     */
+    public static function buildDefaultKey(string $companyCode, string $appCode, int $runtemplateId): string
+    {
+        return $companyCode.'-'.$appCode.'-'.$runtemplateId.'-data';
     }
 }
