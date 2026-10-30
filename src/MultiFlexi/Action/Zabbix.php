@@ -93,10 +93,21 @@ class Zabbix extends \MultiFlexi\CommonAction
                 // This action only sends data to Zabbix server
 
                 if (\Ease\Shared::cfg('USE_ZABBIX_SENDER', false) && file_exists('/usr/bin/zabbix_sender')) {
-                    $cmd = sprintf("zabbix_sender -v -z %s -s %s -k %s -o '%s'", $server, $me, $zabbixKey, addslashes($dataForZabbix));
-                    $this->addStatusMessage($cmd, 'debug');
-                    exec($cmd, $output, $return_var);
-                    $this->addStatusMessage((string) $return_var.':'.implode("\n", $output), 'debug');
+                    // Argument array: no shell is involved, so job output cannot inject commands
+                    $cmd = ['/usr/bin/zabbix_sender', '-v', '-z', (string) $server, '-s', (string) $me, '-k', $zabbixKey, '-o', $dataForZabbix];
+                    $this->addStatusMessage('zabbix_sender -z '.$server.' -s '.$me.' -k '.$zabbixKey, 'debug');
+                    $process = proc_open($cmd, [1 => ['pipe', 'w'], 2 => ['pipe', 'w']], $pipes);
+                    $output = '';
+                    $return_var = -1;
+
+                    if (\is_resource($process)) {
+                        $output = (string) stream_get_contents($pipes[1]).(string) stream_get_contents($pipes[2]);
+                        fclose($pipes[1]);
+                        fclose($pipes[2]);
+                        $return_var = proc_close($process);
+                    }
+
+                    $this->addStatusMessage((string) $return_var.':'.$output, 'debug');
                 } else {
                     $packet = new \MultiFlexi\Zabbix\Request\Packet();
                     $packet->addMetric((new \MultiFlexi\Zabbix\Request\Metric($zabbixKey, $dataForZabbix))->withHostname($me));
