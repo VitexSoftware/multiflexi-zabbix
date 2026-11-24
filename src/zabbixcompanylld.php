@@ -82,7 +82,9 @@ foreach ($runtemplates as $rtid => $runtemplateData) {
     if (\array_key_exists('app_id', $runtemplateData) && \array_key_exists($runtemplateData['app_id'], $appsAssigned)) {
         $lldData[] = [
             '{#APP_NAME}' => $appsAssigned[$runtemplateData['app_id']]['name'],
-            '{#APP_CODE}' => $appsAssigned[$runtemplateData['app_id']]['code'],
+            // Empty string, never null: Zabbix renders null as "null" while Job::reportToZabbix()
+            // concatenates it to an empty code, so the item keys would never match.
+            '{#APP_CODE}' => (string) $appsAssigned[$runtemplateData['app_id']]['code'],
             '{#APP_UUID}' => $appsAssigned[$runtemplateData['app_id']]['uuid'],
             '{#INTERVAL}' => Scheduler::codeToInterval($runtemplateData['interv']),
             '{#INTERVAL_SECONDS}' => Scheduler::codeToSeconds($runtemplateData['interv']),

@@ -1,3 +1,11 @@
+multiflexi-zabbix (2.4.5) trixie; urgency=medium
+
+  * RunTemplate discovery: emit an empty {#APP_CODE} for applications without
+    a code; null produced item keys "...-null-..." that jobs never report to.
+  * debian/Jenkinsfile: one workspace per branch, drop debian:forky.
+
+ -- vitex <info@vitexsoftware.cz>  Tue, 24 Nov 2026 13:40:00 +0100
+
 multiflexi-zabbix (2.4.4) UNRELEASED; urgency=medium
 
   * debian/multiflexi-zabbix.postinst: grant the zabbix agent user
