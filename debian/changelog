@@ -1,3 +1,10 @@
+multiflexi-zabbix (2.4.6) trixie; urgency=medium
+
+  * RunTemplate discovery: include every active RunTemplate, also when its
+    application is not assigned to the company (companyapp).
+
+ -- vitex <info@vitexsoftware.cz>  Tue, 24 Nov 2026 17:50:00 +0100
+
 multiflexi-zabbix (2.4.5) trixie; urgency=medium
 
   * RunTemplate discovery: emit an empty {#APP_CODE} for applications without

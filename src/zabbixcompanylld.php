@@ -45,12 +45,13 @@ $server = str_replace('.'.$companyCode, '', $venue);
 $lldData = [];
 $rumtemplate = new \MultiFlexi\RunTemplate();
 $companer = new Company(['slug' => $companyCode], ['autoload' => true]);
-$ca = new \MultiFlexi\CompanyApp($companer);
 $apper = new Application();
 
 $companyData = $companer->getData();
 
-$appsAssigned = $ca->getAll()->leftJoin('apps ON apps.id = companyapp.app_id')->select(['apps.name', 'apps.description', 'apps.id', 'apps.image, apps.code, apps.uuid'], true)->fetchAll('id');
+// Every application, not only those listed in companyapp: an active RunTemplate runs
+// (and reports its jobs) even when its application is not assigned to the company.
+$apps = $apper->listingQuery()->select(['apps.id', 'apps.name', 'apps.code', 'apps.uuid'], true)->fetchAll('id');
 $runtemplates = $rumtemplate->listingQuery()->where('runtemplate.active', true)->leftJoin('company ON company.id = runtemplate.company_id')->select(['runtemplate.id as runtemplate_id', 'interv', 'cron', 'company.slug AS company_code', 'company.name AS company_name'])->fetchAll('runtemplate_id');
 
 $actions = new \MultiFlexi\ActionConfig();
@@ -79,13 +80,13 @@ foreach ($runtemplates as $rtid => $runtemplateData) {
         continue;
     }
 
-    if (\array_key_exists('app_id', $runtemplateData) && \array_key_exists($runtemplateData['app_id'], $appsAssigned)) {
+    if (\array_key_exists('app_id', $runtemplateData) && \array_key_exists($runtemplateData['app_id'], $apps)) {
         $lldData[] = [
-            '{#APP_NAME}' => $appsAssigned[$runtemplateData['app_id']]['name'],
+            '{#APP_NAME}' => $apps[$runtemplateData['app_id']]['name'],
             // Empty string, never null: Zabbix renders null as "null" while Job::reportToZabbix()
             // concatenates it to an empty code, so the item keys would never match.
-            '{#APP_CODE}' => (string) $appsAssigned[$runtemplateData['app_id']]['code'],
-            '{#APP_UUID}' => $appsAssigned[$runtemplateData['app_id']]['uuid'],
+            '{#APP_CODE}' => (string) $apps[$runtemplateData['app_id']]['code'],
+            '{#APP_UUID}' => $apps[$runtemplateData['app_id']]['uuid'],
             '{#INTERVAL}' => Scheduler::codeToInterval($runtemplateData['interv']),
             '{#INTERVAL_SECONDS}' => Scheduler::codeToSeconds($runtemplateData['interv']),
             '{#NEXT_SCHEDULE_UNIXTIME}' => $runtemplateData['interv'] === 'n' ? null : cronSeconds($runtemplateData['interv'] === 'c' ? $runtemplateData['cron'] : Scheduler::$intervCron[$runtemplateData['interv']])->getTimestamp(),
@@ -99,7 +100,7 @@ foreach ($runtemplates as $rtid => $runtemplateData) {
         ];
     } else {
         if (\array_key_exists('app_id', $runtemplateData)) {
-            $rumtemplate->addStatusMessage('Application '.$runtemplateData['app_id'].' is not assigned with company ?');
+            $rumtemplate->addStatusMessage('Application '.$runtemplateData['app_id'].' does not exist ?');
         } else {
             $rumtemplate->addStatusMessage('Runtemplate '.$runtemplateData['id'].' without application assigned ?');
         }
